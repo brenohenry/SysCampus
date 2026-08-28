@@ -9,19 +9,21 @@ class Usuario
         $this->pdo = $pdo;
     }
 
-    public function buscarPorEmail($email)
+    public function buscarPorMatricula($matricula)
     {
         $sql = "
             SELECT *
             FROM usuarios
-            WHERE email = ?
+            WHERE matricula = ?
             AND status = 'ATIVO'
             LIMIT 1
         ";
 
         $stmt = $this->pdo->prepare($sql);
 
-        $stmt->execute([$email]);
+        $stmt->execute([
+            $matricula
+        ]);
 
         return $stmt->fetch();
     }
@@ -36,14 +38,16 @@ class Usuario
 
         $stmt = $this->pdo->prepare($sql);
 
-        $stmt->execute([$id]);
+        $stmt->execute([
+            $id
+        ]);
 
         return $stmt->fetch();
     }
 
     public function cadastrar(
+        $matricula,
         $nome,
-        $email,
         $senha,
         $tipo = "PROFESSOR"
     ) {
@@ -56,8 +60,8 @@ class Usuario
         $sql = "
             INSERT INTO usuarios
             (
+                matricula,
                 nome,
-                email,
                 senha,
                 tipo
             )
@@ -67,8 +71,8 @@ class Usuario
         $stmt = $this->pdo->prepare($sql);
 
         return $stmt->execute([
+            $matricula,
             $nome,
-            $email,
             $senhaHash,
             $tipo
         ]);
@@ -79,8 +83,8 @@ class Usuario
         $sql = "
             SELECT
                 id_usuario,
+                matricula,
                 nome,
-                email,
                 tipo,
                 status,
                 criado_em
@@ -91,5 +95,58 @@ class Usuario
         $stmt = $this->pdo->query($sql);
 
         return $stmt->fetchAll();
+    }
+
+    public function atualizar(
+        $id,
+        $matricula,
+        $nome,
+        $tipo,
+        $status
+    ) {
+
+        $sql = "
+            UPDATE usuarios
+            SET
+                matricula = ?,
+                nome = ?,
+                tipo = ?,
+                status = ?
+            WHERE id_usuario = ?
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        return $stmt->execute([
+            $matricula,
+            $nome,
+            $tipo,
+            $status,
+            $id
+        ]);
+    }
+
+    public function alterarSenha(
+        $id,
+        $senha
+    ) {
+
+        $senhaHash = password_hash(
+            $senha,
+            PASSWORD_DEFAULT
+        );
+
+        $sql = "
+            UPDATE usuarios
+            SET senha = ?
+            WHERE id_usuario = ?
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        return $stmt->execute([
+            $senhaHash,
+            $id
+        ]);
     }
 }
