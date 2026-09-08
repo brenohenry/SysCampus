@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SysCampus — Lumen Veritas</title><link rel="stylesheet" href="assets/css/styles.css"></head>
+<body class="home-page">
+<header class="topbar">
+  <a class="brand" href="index.html"><img src="assets/img/logo_syscampus.png" alt="SysCampus"></a>
+  <nav>
+    <a href="#login" class="top-btn" data-role-login="USER">♙ <span>Área do usuário</span></a>
+    <a href="#login" class="top-btn" data-role-login="ADMIN">♢ <span>Área do Administrador</span></a>
+  </nav>
+</header>
+<main class="hero">
+  <div class="hero-overlay"></div>
+  <section class="login-card" id="login">
+    <img class="sys-logo" src="assets/img/logo_syscampus.png" alt="SysCampus">
+    <div class="login-context" id="loginContext">Área do usuário</div>
+    <form id="loginForm">
+      <input type="hidden" name="role" id="loginRole" value="USER">
+      <label>ID</label>
+      <div class="input-wrap"><span>♙</span><input name="email" type="email" placeholder="Insira seu ID" required></div>
+      <label>Senha</label>
+      <div class="input-wrap"><span>♙</span><input name="password" type="password" placeholder="Insira sua senha" required><button type="button" class="eye" data-toggle-password>◉</button></div>
+      <button class="primary-btn" type="submit">Entrar</button>
+      <a href="#" class="forgot" onclick="alert('Procure o administrador do sistema para redefinir sua senha.');return false;">Esqueceu sua senha?</a>
+      <div id="loginMsg" class="msg"></div>
+    </form>
+  </section>
+</main>
+<script src="assets/js/app.js"></script>
+</body></html>
