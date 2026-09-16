@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pt-BR">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SysCampus — Lumen Veritas</title><link rel="stylesheet" href="assets/css/styles.css"></head>
+<body class="home-page">
+<header class="topbar login-topbar">
+  <div class="login-brand-logos" aria-label="Lumen Veritas e SysCampus">
+    <img src="assets/img/logo_lumenveritas.png" alt="Lumen Veritas" class="login-logo login-logo-lumen">
+    <span class="login-logo-divider" aria-hidden="true"></span>
+    <img src="assets/img/logo_syscampus.png" alt="SysCampus" class="login-logo login-logo-sys">
+  </div>
+  <nav aria-label="Áreas de acesso">
+    <a href="#login" class="top-btn" data-role-login="ADMIN" aria-label="Acessar área do administrador">♙ <span>Área do Administrador</span></a>
+    <a href="#login" class="top-btn" data-role-login="USER" aria-label="Acessar área do usuário">♙ <span>Área do Usuário</span></a>
+  </nav>
+</header>
+<main class="hero">
+  <div class="hero-overlay"></div>
+  <section class="login-card" id="login">
+    <div class="login-context" id="loginContext">Área do usuário</div>
+    <form id="loginForm">
+      <input type="hidden" name="role" id="loginRole" value="USER">
+      <label>ID</label>
+      <div class="input-wrap"><span>♙</span><input name="email" type="email" placeholder="Insira seu ID" required></div>
+      <label>Senha</label>
+      <div class="input-wrap"><span>♙</span><input name="password" type="password" placeholder="Insira sua senha" required><button type="button" class="eye" data-toggle-password>◉</button></div>
+      <button class="primary-btn" type="submit">Entrar</button>
+      <a href="#" class="forgot" onclick="alert('Procure o administrador do sistema para redefinir sua senha.');return false;">Esqueceu sua senha?</a>
+      <div id="loginMsg" class="msg"></div>
+    </form>
+  </section>
+</main>
+<script src="assets/js/app.js?v=20260915-r2"></script>
+</body></html>

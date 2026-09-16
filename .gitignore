@@ -1,0 +1,16 @@
+# SysCampus / PHP local files
+config.local.php
+.env
+.env.*
+*.log
+*.tmp
+*.bak
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Dependencies / generated files
+node_modules/
