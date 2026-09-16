@@ -30,3 +30,47 @@ Atualização: a homepage possui áreas de login distintas para usuário e admin
 2. Inicie apenas o Apache do XAMPP. O MySQL usado pelo projeto é o MySQL Server 8.0 em `127.0.0.1:3306`.
 3. Abra `http://localhost/syscampus/`.
 4. O banco esperado é `syscampus`.
+
+## Recuperação e redefinição de senha
+
+O login possui o fluxo "Esqueceu sua senha?" integrado ao PHP e MySQL. O envio é feito pelo PHPMailer via SMTP.
+
+### Instalação do PHPMailer
+
+Na pasta raiz do projeto execute:
+
+```bash
+composer install
+```
+
+Isso cria a pasta `vendor/`.
+
+### Configuração SMTP
+
+Edite `mail.config.php`:
+
+```php
+return [
+  'host' => 'smtp.gmail.com',
+  'port' => 587,
+  'encryption' => 'tls',
+  'username' => 'SEU_EMAIL_GMAIL',
+  'password' => 'SUA_SENHA_DE_APLICATIVO',
+  'from_email' => 'SEU_EMAIL_GMAIL',
+  'from_name' => 'SysCampus — Lumen Veritas'
+];
+```
+
+Para Gmail, utilize uma **senha de aplicativo**, e não a senha normal da conta.
+
+### Banco de dados
+
+Se o banco já existir, execute:
+
+```text
+database/migration_password_reset.sql
+```
+
+Se o banco estiver sendo criado do zero, `database/schema.sql` já contém os campos de recuperação.
+
+O token é gerado com `random_bytes`, expira em 1 hora, não revela ao solicitante se o e-mail está cadastrado e é invalidado após a redefinição.

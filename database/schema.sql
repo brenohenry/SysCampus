@@ -8,8 +8,11 @@ CREATE TABLE IF NOT EXISTS users (
   password_hash VARCHAR(255) NOT NULL,
   role ENUM('USER','ADMIN') NOT NULL DEFAULT 'USER',
   active TINYINT(1) NOT NULL DEFAULT 1,
+  reset_token CHAR(64) NULL,
+  reset_token_expires_at DATETIME NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  INDEX idx_users_active_role(active,role)
+  INDEX idx_users_active_role(active,role),
+  UNIQUE KEY uq_users_reset_token(reset_token)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS rooms (
@@ -20,6 +23,8 @@ CREATE TABLE IF NOT EXISTS rooms (
   location VARCHAR(180) NOT NULL,
   resources TEXT NOT NULL,
   active TINYINT(1) NOT NULL DEFAULT 1,
+  reset_token CHAR(64) NULL,
+  reset_token_expires_at DATETIME NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_rooms_active(active)
@@ -32,6 +37,8 @@ CREATE TABLE IF NOT EXISTS equipment (
   description TEXT NOT NULL,
   location VARCHAR(180) NOT NULL DEFAULT '',
   active TINYINT(1) NOT NULL DEFAULT 1,
+  reset_token CHAR(64) NULL,
+  reset_token_expires_at DATETIME NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   INDEX idx_equipment_active(active)

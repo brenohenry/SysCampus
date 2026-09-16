@@ -11,6 +11,11 @@ try {
   ]);
 } catch(Throwable $e) { json_out(['ok'=>false,'error'=>'Não foi possível conectar ao MySQL. Verifique config.php.'],500); }
 function json_out(array $data,int $status=200):never { http_response_code($status); header('Content-Type: application/json; charset=utf-8'); header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0'); header('Pragma: no-cache'); echo json_encode($data,JSON_UNESCAPED_UNICODE); exit; }
+function app_base_url():string {
+  $scriptDir=str_replace('\\','/',dirname($_SERVER['SCRIPT_NAME']??''));
+  // auth.php está em /php; o frontend fica na raiz do SysCampus.
+  return rtrim(str_replace('/php','',$scriptDir),'/');
+}
 function input():array { $raw=file_get_contents('php://input'); $j=json_decode($raw,true); return is_array($j)?$j:$_POST; }
 function user():?array { return $_SESSION['user']??null; }
 function login_required():array { $u=user(); if(!$u) json_out(['ok'=>false,'error'=>'Sessão expirada.'],401); return $u; }
