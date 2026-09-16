@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Redefinir senha — SysCampus</title>
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="home-page">
+<header class="topbar login-topbar">
+  <div class="login-brand-logos" aria-label="Lumen Veritas e SysCampus">
+    <img src="assets/img/logo_lumenveritas.png" alt="Lumen Veritas" class="login-logo login-logo-lumen">
+    <span class="login-logo-divider" aria-hidden="true"></span>
+    <img src="assets/img/logo_syscampus.png" alt="SysCampus" class="login-logo login-logo-sys">
+  </div>
+</header>
+<main class="hero">
+  <div class="hero-overlay"></div>
+  <section class="login-card" id="resetCard">
+    <div class="login-context">Redefinir senha</div>
+    <p id="tokenStatus" class="hint">Validando o link...</p>
+    <form id="resetForm" hidden>
+      <label for="password">Nova senha</label>
+      <div class="input-wrap"><span>♙</span><input id="password" name="password" type="password" minlength="8" autocomplete="new-password" required></div>
+      <label for="passwordConfirm">Confirmar nova senha</label>
+      <div class="input-wrap"><span>♙</span><input id="passwordConfirm" name="passwordConfirm" type="password" minlength="8" autocomplete="new-password" required></div>
+      <button class="primary-btn" type="submit">Redefinir senha</button>
+      <div id="resetMsg" class="msg" role="status"></div>
+    </form>
+    <a href="index.html#login" class="forgot">Voltar para o login</a>
+  </section>
+</main>
+<script src="assets/js/app.js?v=20260915-r3"></script>
+<script>
+const token=new URLSearchParams(location.search).get('token')||'';
+const statusEl=document.getElementById('tokenStatus');
+const form=document.getElementById('resetForm');
+(async()=>{
+  if(!token){statusEl.textContent='Link de recuperação inválido ou incompleto.';return;}
+  try{
+    const d=await req('auth.php?action=validate-reset-token&token='+encodeURIComponent(token));
+    statusEl.textContent='Digite sua nova senha. O link é válido até '+d.expires_at+'.';
+    form.hidden=false;
+  }catch(e){statusEl.textContent=e.message;}
+})();
+form.addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const msg=document.getElementById('resetMsg');
+  const p=document.getElementById('password').value;
+  const pc=document.getElementById('passwordConfirm').value;
+  if(p!==pc){msg.textContent='As senhas não coincidem.';return;}
+  try{
+    const d=await req('auth.php?action=reset-password',{method:'POST',body:JSON.stringify({token,password:p,password_confirm:pc})});
+    msg.textContent=d.message;
+    form.querySelector('button').disabled=true;
+    setTimeout(()=>location.href='index.html#login',1800);
+  }catch(e){msg.textContent=e.message;}
+});
+</script>
+</body></html>
