@@ -1,5 +1,8 @@
 <?php
 declare(strict_types=1);
+// O SysCampus opera no horário de Brasília/Rio de Janeiro.
+// Isso evita que a disponibilidade de hoje seja filtrada usando o fuso padrão do PHP/XAMPP.
+date_default_timezone_set('America/Sao_Paulo');
 $config=require __DIR__.'/../config.php';
 if (session_status() !== PHP_SESSION_ACTIVE) { session_name($config['session_name']); session_start(); }
 $dsn="mysql:host={$config['db']['host']};port={$config['db']['port']};dbname={$config['db']['name']};charset={$config['db']['charset']}";
